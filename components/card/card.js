@@ -6,10 +6,7 @@ import { motion } from 'framer-motion';
 
 import styles from './card.module.css';
 
-const Card = ({
-	imgUrl = 'https://unsplash.com/photos/evlkOfkQ5rE',
-	size = 'medium',
-}) => {
+const Card = ({ imgUrl = '/static/clifford.webp', size = 'medium', id }) => {
 	const [imgSrc, setImgSrc] = useState(imgUrl);
 
 	const classMap = {
@@ -20,14 +17,16 @@ const Card = ({
 
 	const handleOnError = () => {
 		console.log('error occurred');
-		setImgSrc('https://unsplash.com/photos/evlkOfkQ5rE');
+		setImgSrc('/static/clifford.webp');
 	};
+
+	const scale = id === 0 ? { scaleY: 1.1 } : { scale: 1.1 };
 
 	return (
 		<div className={styles.container}>
 			<motion.div
 				className={cls(styles.imgMotionWrapper, classMap[size])}
-				whileHover={{ scale: 1.2 }}>
+				whileHover={{ ...scale }}>
 				<Image
 					src={imgSrc}
 					alt='image'

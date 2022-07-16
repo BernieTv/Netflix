@@ -1,13 +1,16 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
 
 import NavBar from '../components/nav/navbar';
 import Banner from '../components/banner/banner';
 import SectionCards from '../components/card/section-cards';
-import Card from '../components/card/card';
+
+import { getVideos } from '../lib/videos';
+
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
+	const disneyVideos = getVideos();
+
 	return (
 		<div className={styles.container}>
 			<Head>
@@ -23,11 +26,11 @@ export default function Home() {
 				imgUrl='/static/clifford.webp'
 			/>
 
-			<SectionCards title='Disney' />
-
-			<Card imgUrl='/static/clifford.webp' size='large' />
-			<Card imgUrl='/static/clifford.webp' size='medium' />
-			<Card imgUrl='/static/clifford.webp' size='small' />
+			<div className={styles.sectionWrapper}>
+				<SectionCards title='Disney' videos={disneyVideos} size='large' />
+				<SectionCards title='Disney' videos={disneyVideos} size='medium' />
+				<SectionCards title='Disney' videos={disneyVideos} size='small' />
+			</div>
 		</div>
 	);
 }
