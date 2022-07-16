@@ -28,6 +28,7 @@ const Card = ({ imgUrl = '/static/clifford.webp', size = 'medium', id }) => {
 				className={cls(styles.imgMotionWrapper, classMap[size])}
 				whileHover={{ ...scale }}>
 				<Image
+					priority={true}
 					src={imgSrc}
 					alt='image'
 					layout='fill'
