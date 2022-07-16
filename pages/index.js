@@ -4,6 +4,8 @@ import styles from '../styles/Home.module.css';
 
 import NavBar from '../components/nav/navbar';
 import Banner from '../components/banner/banner';
+import SectionCards from '../components/card/section-cards';
+import Card from '../components/card/card';
 
 export default function Home() {
 	return (
@@ -21,8 +23,11 @@ export default function Home() {
 				imgUrl='/static/clifford.webp'
 			/>
 
-			{/* 
-			<Card /> */}
+			<SectionCards title='Disney' />
+
+			<Card imgUrl='/static/clifford.webp' size='large' />
+			<Card imgUrl='/static/clifford.webp' size='medium' />
+			<Card imgUrl='/static/clifford.webp' size='small' />
 		</div>
 	);
 }
