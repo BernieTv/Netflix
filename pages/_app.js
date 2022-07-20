@@ -1,27 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { magic } from '../lib/magic-client';
 import Loading from '../components/loading/loading';
 
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
+	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		async function loginHandler() {
-			const isLoggedIn = await magic.user.isLoggedIn();
-			if (isLoggedIn) {
-				router.push('/');
-			} else {
-				router.push('/login');
-			}
-		}
-
-		loginHandler();
-	}, []);
 
 	useEffect(() => {
 		const handleComplete = () => {
@@ -36,7 +22,6 @@ function MyApp({ Component, pageProps }) {
 			router.events.off('routeChangeError', handleComplete);
 		};
 	}, [router]);
-
 	return isLoading ? <Loading /> : <Component {...pageProps} />;
 }
 
