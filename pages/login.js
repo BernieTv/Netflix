@@ -39,23 +39,34 @@ const Login = () => {
 		e.preventDefault();
 
 		if (email) {
-			if (email === 'bektuxtasinov@gmail.com') {
-				setIsLoading(true);
+			setIsLoading(true);
 
-				try {
-					const didToken = await magic.auth.loginWithMagicLink({
-						email,
+			try {
+				const didToken = await magic.auth.loginWithMagicLink({
+					email,
+				});
+
+				if (didToken) {
+					const response = await fetch('/api/login', {
+						method: 'POST',
+						headers: {
+							Authorization: `Bearer ${didToken}`,
+							'Content-Type': 'application/json',
+						},
 					});
 
-					if (didToken) {
+					const loggedInResponse = await response.json();
+
+					if (loggedInResponse.done) {
 						router.push('/');
+					} else {
+						setIsLoading(false);
+						setUserMsg('Something went wrong logging in');
 					}
-				} catch (error) {
-					console.error('Something went wrong logging in', error);
-					setIsLoading(false);
 				}
-			} else {
-				setUserMsg('Something went wrong logging in');
+			} catch (error) {
+				console.error('Something went wrong logging in', error);
+				setIsLoading(false);
 			}
 		} else {
 			setUserMsg('Enter a valid email address');

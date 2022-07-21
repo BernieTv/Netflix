@@ -5,7 +5,6 @@ import Banner from '../components/banner/banner';
 import SectionCards from '../components/card/section-cards';
 
 import { getVideos, getPopularVideos } from '../lib/videos';
-import { startFetchMyQuery } from '../lib/db/hasura';
 
 import styles from '../styles/Home.module.css';
 
@@ -24,8 +23,6 @@ export default function Home({
 	travelVideos,
 	popularVideos,
 }) {
-	startFetchMyQuery();
-
 	return (
 		<div className={styles.container}>
 			<Head>

@@ -16,7 +16,7 @@ const Card = ({ imgUrl = '/static/clifford.webp', size = 'medium', id }) => {
 	};
 
 	const handleOnError = () => {
-		console.log('error occurred');
+		console.error('error occurred');
 		setImgSrc('/static/clifford.webp');
 	};
 
