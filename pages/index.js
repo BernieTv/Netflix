@@ -10,7 +10,9 @@ import UseRedirectUser from '../utils/redirectUser';
 import styles from '../styles/Home.module.css';
 
 export async function getServerSideProps(context) {
-	const { userId, token } = UseRedirectUser(context);
+	const { userId, token } = await UseRedirectUser(context);
+
+	if (!userId) context.res.writeHead(302, { Location: '/login' });
 
 	const watchItAgainVideos = await getWatchItAgainVideos(userId, token);
 	const disneyVideos = await getVideos('disney trailer');
