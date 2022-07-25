@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Modal from 'react-modal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import cls from 'classnames';
 
 import NavBar from '../../components/nav/navbar';
@@ -41,6 +41,8 @@ const Video = ({ video }) => {
 	const [toggleDislike, setToggleDislike] = useState(false);
 	const router = useRouter();
 
+	const { videoId } = router.query;
+
 	const {
 		title,
 		publishTime,
@@ -49,15 +51,51 @@ const Video = ({ video }) => {
 		statistics: { viewCount } = { viewCount: 0 },
 	} = video;
 
-	const handleToggleLike = () => {
+	useEffect(() => {
+		async function fetchLikeDislikeStats() {
+			const response = await fetch(`/api/stats?videoId=${videoId}`);
+
+			const data = await response.json();
+
+			if (data.length > 0) {
+				const favourited = data[0].favourited;
+				if (favourited === 1) {
+					setToggleLike(true);
+				} else {
+					setToggleDislike(true);
+				}
+			}
+		}
+
+		fetchLikeDislikeStats();
+	}, [videoId]);
+
+	const runRatingService = async (favourited) => {
+		return await fetch('/api/stats', {
+			method: 'POST',
+			body: JSON.stringify({ videoId, favourited }),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+	};
+
+	const handleToggleLike = async () => {
 		const val = !toggleLike;
 		setToggleLike(val);
 		setToggleDislike(toggleLike);
+
+		const favourited = val ? 1 : 0;
+		const response = await runRatingService(favourited);
 	};
 
-	const handleToggleDislike = () => {
+	const handleToggleDislike = async () => {
 		setToggleDislike(!toggleDislike);
 		setToggleLike(toggleDislike);
+
+		const val = !toggleDislike;
+		const favourited = val ? 0 : 1;
+		const response = await runRatingService(favourited);
 	};
 
 	return (
@@ -79,7 +117,7 @@ const Video = ({ video }) => {
 					type='text/html'
 					width='100%'
 					height='360'
-					src={`https://www.youtube.com/embed/${router.query.videoId}?autoplay=0&origin=http://example.com&controls=0&rel=0`}
+					src={`https://www.youtube.com/embed/${videoId}?autoplay=0&origin=http://example.com&controls=0&rel=0`}
 					frameBorder='0'></iframe>
 
 				<div className={styles.likeDislikeBtnWrapper}>
