@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { verifyToken } from '../lib/utils';
+import { verifyToken } from './lib/utils';
 
 export default async function middleware(req, ev) {
 	const token = req ? req.cookies.token : null;
